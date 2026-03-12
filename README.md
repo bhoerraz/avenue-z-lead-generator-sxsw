@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AEO Readiness Assessment — Avenue Z
 
-## Getting Started
+A Next.js lead generation app built for SXSW 2026. Attendees scan a QR code, enter their email, complete a 10-section AI Search Readiness Assessment, and receive an instant scored results page with a personalized breakdown.
 
-First, run the development server:
+**Live URL:** https://aeo.avenuez.com
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## What It Does
+
+- Email capture on landing → logged to Google Sheets as "Incomplete"
+- 10-section assessment with 4-point scale per question (0–3)
+- Instant results page with score, maturity level, section breakdown, and priority focus areas
+- Completion row logged to Google Sheets with full section scores
+- Results email sent via Resend from Tina Fleming `<no-reply@send.avenuez.com>`
+- GA4 tracking with `assessment_started` and `assessment_completed` custom events
+
+---
+
+## Tech Stack
+
+| Layer | Choice |
+|---|---|
+| Framework | Next.js (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Font | Nunito Sans |
+| Data store | Google Sheets via `googleapis` |
+| Email | Resend |
+| Analytics | GA4 (`G-14EZ67DY2W`) |
+| Hosting | Vercel |
+
+---
+
+## Environment Variables
+
+Set in `.env.local` (local) and Vercel dashboard (production):
+
+```
+GOOGLE_SERVICE_ACCOUNT_KEY=   # Full service account JSON, stringified
+GOOGLE_SHEET_ID=               # ID from Google Sheet URL
+RESEND_API_KEY=                # From resend.com dashboard
+RESEND_FROM_EMAIL=             # e.g. Tina Fleming <no-reply@send.avenuez.com>
+NEXT_PUBLIC_AUDIT_CTA_URL=     # CTA link, e.g. mailto:hello@avenuez.com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cd aeo-assessment
+npm install
+npm run dev
+```
 
-## Learn More
+Open http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Google Sheets
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Sheet tab: **Leads**
+Column order: `Timestamp | Email | Total Score | Maturity Level | S1–S10`
 
-## Deploy on Vercel
+Two rows per completed user (by design):
+1. Email submitted on landing → `Incomplete`
+2. Assessment completed → full scores
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Filter by non-empty `Total Score` for completions only.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Deployment
+
+Pushing to `main` on GitHub auto-deploys via Vercel.
+
+Vercel project: `avenue-z-lead-generator-sxsw-654s`
+GitHub repo: `bhoerraz/avenue-z-lead-generator-sxsw`
