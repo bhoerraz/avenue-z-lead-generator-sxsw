@@ -12,6 +12,22 @@ export const metadata: Metadata = {
   title: 'AEO Readiness Assessment — Avenue Z',
   description:
     'Find out how ready your brand is for AI search in under 2 minutes. Get an instant score across 10 AEO readiness categories.',
+  openGraph: {
+    title: 'Is Your Brand Ready for AI Search?',
+    description:
+      'Take the Avenue Z AEO Readiness Assessment — 10 sections, instant score, free.',
+    siteName: 'Avenue Z',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Is Your Brand Ready for AI Search?',
+    description:
+      'Take the Avenue Z AEO Readiness Assessment — 10 sections, instant score, free.',
+  },
+  icons: {
+    icon: '/icon.svg',
+  },
 }
 
 export default function RootLayout({
