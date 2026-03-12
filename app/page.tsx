@@ -1,65 +1,162 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useState, FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
+import Logo from '@/components/Logo'
+
+const BRAND_GRADIENT = 'linear-gradient(135deg, #FFFC60, #60FF80, #60FDFF, #39A0FF, #6034FF)'
+
+export default function LandingPage() {
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setError('')
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.')
+      return
+    }
+
+    setLoading(true)
+    try {
+      await fetch('/api/submit-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, score: null, sections: null }),
+      })
+    } catch {
+      // Best-effort lead capture — don't block the user on failure
+    }
+    router.push('/assess?email=' + encodeURIComponent(email))
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main
+      className="relative min-h-screen bg-black flex flex-col"
+      style={{
+        background:
+          'radial-gradient(ellipse 60% 40% at 90% 100%, rgba(0,60,60,0.5) 0%, transparent 70%), #000000',
+      }}
+    >
+      {/* Top bar */}
+      <header className="px-6 pt-6 flex items-center">
+        <Logo height={22} />
+      </header>
+
+      {/* Hero content */}
+      <div className="flex-1 flex items-center justify-center px-6 py-16">
+        <div className="w-full max-w-[560px] flex flex-col gap-8">
+          {/* Badge */}
+          <div className="flex">
+            <span
+              className="text-xs font-800 tracking-widest uppercase px-4 py-1.5 rounded-pill"
+              style={{
+                background: 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: '#8A8A8A',
+                letterSpacing: '0.14em',
+              }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              AEO Readiness
+            </span>
+          </div>
+
+          {/* Headline */}
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-white">
+              Is Your Brand Ready for
+            </h1>
+            <h1
+              className="text-4xl sm:text-5xl font-extrabold leading-tight"
+              style={{
+                background: BRAND_GRADIENT,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
             >
-              Learning
-            </a>{" "}
-            center.
+              AI Search?
+            </h1>
+          </div>
+
+          {/* Subhead */}
+          <p className="text-lg leading-relaxed" style={{ color: '#8A8A8A' }}>
+            Take our 2-minute, 10-section assessment and get an instant readiness
+            score — plus a personalized breakdown of where your brand stands in
+            the AI search era.
           </p>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+            <div>
+              <label htmlFor="email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email"
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full outline-none transition-all"
+                style={{
+                  background: '#272727',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: 12,
+                  padding: '14px 18px',
+                  color: '#FFFFFF',
+                  fontSize: 16,
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#60FDFF'
+                  e.currentTarget.style.boxShadow = '0 0 0 2px rgba(96,253,255,0.15)'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
+              />
+              {error && (
+                <p className="mt-2 text-sm" style={{ color: '#FF6060' }}>
+                  {error}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full font-extrabold text-sm tracking-widest uppercase transition-opacity"
+              style={{
+                background: loading
+                  ? '#3a3a3a'
+                  : 'linear-gradient(135deg, #FFFC60, #60FF80, #60FDFF)',
+                color: loading ? '#8A8A8A' : '#000000',
+                border: 'none',
+                borderRadius: 9999,
+                padding: '14px 32px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                letterSpacing: '0.06em',
+              }}
+            >
+              {loading ? 'Starting…' : 'Start Your Assessment →'}
+            </button>
+
+            <p className="text-center text-sm" style={{ color: '#8A8A8A' }}>
+              Your results are instant. No spam.
+            </p>
+          </form>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+      </div>
+
+      {/* Bottom gradient divider */}
+      <div style={{ height: 1, background: BRAND_GRADIENT }} />
+    </main>
+  )
 }
