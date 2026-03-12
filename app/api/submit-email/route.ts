@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       const resend = new Resend(process.env.RESEND_API_KEY)
       const maturity = getMaturityLevel(score)
       await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? 'AEO Assessment <onboarding@resend.dev>',
+        from: process.env.RESEND_FROM_EMAIL ?? 'Tina Fleming <no-reply@send.avenuez.com>',
         to: email,
         subject: `Your AEO Readiness Score: ${score}/156 — ${maturity.label}`,
         html: buildEmailHtml({ email, score, maturity, resultsUrl }),
@@ -137,8 +137,11 @@ function buildEmailHtml({
           <!-- Footer -->
           <tr>
             <td style="padding-top:32px;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#555555;">
+              <p style="margin:0 0 8px;font-size:12px;color:#555555;">
                 © Avenue Z · <a href="https://avenuez.com" style="color:#555555;">avenuez.com</a>
+              </p>
+              <p style="margin:0;font-size:11px;color:#444444;">
+                This is an automated email from an unmonitored inbox — please do not reply.
               </p>
             </td>
           </tr>
