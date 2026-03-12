@@ -73,6 +73,13 @@ function AssessContent() {
       // Best-effort — don't block results
     }
 
+    if (typeof (window as any).gtag === 'function') {
+      ;(window as any).gtag('event', 'assessment_completed', {
+        total_score: totalScore,
+        score_pct: Math.round((totalScore / 156) * 100),
+      })
+    }
+
     router.push('/results?' + params.toString())
   }
 

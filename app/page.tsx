@@ -32,6 +32,9 @@ export default function LandingPage() {
     } catch {
       // Best-effort lead capture — don't block the user on failure
     }
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      ;(window as any).gtag('event', 'assessment_started')
+    }
     router.push('/assess?email=' + encodeURIComponent(email))
   }
 

@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Nunito_Sans } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
+
+const GA_ID = 'G-14EZ67DY2W'
 
 const nunitoSans = Nunito_Sans({
   subsets: ['latin'],
@@ -38,6 +41,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={nunitoSans.variable}>
       <body className="font-sans antialiased bg-black text-white">
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_ID}');
+        `}</Script>
         {children}
       </body>
     </html>
