@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { sections } from '@/lib/questions'
+import { TOTAL_MAX } from '@/lib/scoring'
 import Logo from '@/components/Logo'
 
 const BRAND_GRADIENT = 'linear-gradient(135deg, #FFFC60, #60FF80, #60FDFF, #39A0FF, #6034FF)'
@@ -49,7 +50,7 @@ function AssessContent() {
     if (typeof (window as any).gtag === 'function') {
       ;(window as any).gtag('event', 'assessment_completed', {
         total_score: totalScore,
-        score_pct: Math.round((totalScore / 156) * 100),
+        score_pct: Math.round((totalScore / TOTAL_MAX) * 100),
       })
     }
 

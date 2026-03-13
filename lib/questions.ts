@@ -14,33 +14,6 @@ export interface Section {
 
 export const sections: Section[] = [
   {
-    id: 's1',
-    title: 'AI Search Awareness & Strategy',
-    description: 'How well does your organization understand the shift toward AI-driven search?',
-    maxScore: 15,
-    questions: [
-      { id: 's1q1', text: 'Our marketing leadership understands that AI-generated answers are becoming a major discovery channel.' },
-      { id: 's1q2', text: 'AI search visibility (AEO / LLM optimization) has been discussed as part of our SEO or organic growth strategy.' },
-      { id: 's1q3', text: 'Our team understands how AI answers are sourced (owned content, editorial sources, forums, reference sites).' },
-      { id: 's1q4', text: 'We have identified priority questions or prompts where we want our brand to appear in AI-generated answers.' },
-      { id: 's1q5', text: 'AI search trends and visibility are reviewed periodically in marketing planning or strategy meetings.' },
-    ],
-  },
-  {
-    id: 's2',
-    title: 'Organizational Support & Execution',
-    description: 'Do you have the resources and support needed to implement improvements?',
-    maxScore: 18,
-    questions: [
-      { id: 's2q1', text: 'Our marketing team has authority to update website content and structure when opportunities are identified.' },
-      { id: 's2q2', text: 'We have technical resources (developers or CMS control) needed to implement schema, technical SEO, and site improvements.' },
-      { id: 's2q3', text: 'SEO, content, PR, and product marketing collaborate effectively on organic visibility initiatives.' },
-      { id: 's2q4', text: 'Leadership supports ongoing optimization and experimentation, not just one-time campaigns.' },
-      { id: 's2q5', text: 'We have budget or resources available for content development, PR placements, or editorial coverage.' },
-      { id: 's2q6', text: 'We have a clear process to prioritize organic growth initiatives across teams.' },
-    ],
-  },
-  {
     id: 's3',
     title: 'On-Page Answer Content',
     description: 'How well is your content structured for AI extraction and citation?',
@@ -107,19 +80,6 @@ export const sections: Section[] = [
     ],
   },
   {
-    id: 's8',
-    title: 'Conversation & UGC Presence',
-    description: 'What do real-world conversations about your category look like?',
-    maxScore: 15,
-    questions: [
-      { id: 's8q1', text: 'There are active discussions about our category on Reddit, forums, and social platforms.' },
-      { id: 's8q2', text: 'When our brand is mentioned, sentiment is generally positive or balanced.' },
-      { id: 's8q3', text: 'Helpful responses exist where people compare us with competitors.' },
-      { id: 's8q4', text: 'Employees, partners, or thought leaders share educational insights on platforms like LinkedIn.' },
-      { id: 's8q5', text: 'We monitor community discussions and incorporate insights into our owned content.' },
-    ],
-  },
-  {
     id: 's9',
     title: 'Commerce & Product Discoverability',
     description: 'How discoverable are your products to AI shopping assistants?',
@@ -131,19 +91,6 @@ export const sections: Section[] = [
       { id: 's9q3', text: 'Our products appear in trusted buying guides and "best product" roundups.' },
       { id: 's9q4', text: 'Product pages include rich attributes such as use cases, audiences, and benefits.' },
       { id: 's9q5', text: 'We experiment with AI-powered shopping or in-assistant purchase experiences.' },
-    ],
-  },
-  {
-    id: 's10',
-    title: 'AI Visibility & Performance Tracking',
-    description: 'Are you measuring AI search performance?',
-    maxScore: 15,
-    questions: [
-      { id: 's10q1', text: 'We use tools to track which brands and URLs appear in AI answers.' },
-      { id: 's10q2', text: 'We monitor share of voice and sentiment compared to competitors.' },
-      { id: 's10q3', text: 'In GA4 we track AI engines (ChatGPT, Perplexity, Gemini) as referral sources.' },
-      { id: 's10q4', text: 'We measure conversion performance from AI traffic.' },
-      { id: 's10q5', text: 'AI visibility insights influence our content strategy and PR priorities.' },
     ],
   },
 ]

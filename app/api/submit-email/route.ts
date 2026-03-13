@@ -1,7 +1,7 @@
 import { google } from 'googleapis'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { getMaturityLevel } from '@/lib/scoring'
+import { getMaturityLevel, TOTAL_MAX } from '@/lib/scoring'
 
 export async function POST(req: Request) {
   const body = await req.json()
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID!,
-      range: 'Leads!A:N',
+      range: 'Leads!A:J',
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
             email,
             score ?? '',
             maturityLevel,
-            ...(sections ?? Array(10).fill('')),
+            ...(sections ?? Array(6).fill('')),
           ],
         ],
       },
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL ?? 'Tina Fleming <no-reply@send.avenuez.com>',
         to: email,
-        subject: `Your AEO Readiness Score: ${score}/156 — ${maturity.label}`,
+        subject: `Your AEO Readiness Score: ${score}/${TOTAL_MAX} — ${maturity.label}`,
         html: buildEmailHtml({ email, score, maturity, resultsUrl }),
       })
     } catch (err) {
@@ -74,7 +74,7 @@ function buildEmailHtml({
   maturity: ReturnType<typeof getMaturityLevel>
   resultsUrl: string
 }) {
-  const pct = Math.round((score / 156) * 100)
+  const pct = Math.round((score / TOTAL_MAX) * 100)
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -105,7 +105,7 @@ function buildEmailHtml({
               <p style="margin:0 0 4px;font-size:72px;font-weight:900;line-height:1;background:linear-gradient(135deg,#FFFC60,#60FF80,#60FDFF,#39A0FF,#6034FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
                 ${score}
               </p>
-              <p style="margin:0 0 24px;font-size:24px;font-weight:700;color:#8A8A8A;">/ 156</p>
+              <p style="margin:0 0 24px;font-size:24px;font-weight:700;color:#8A8A8A;">/ ${TOTAL_MAX}</p>
 
               <div style="display:inline-block;padding:8px 20px;border-radius:9999px;border:1.5px solid rgba(255,255,255,0.2);margin-bottom:16px;">
                 <span style="font-size:12px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#ffffff;">
